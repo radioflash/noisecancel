@@ -1,0 +1,3 @@
+[submodule "arm-none-eabi-gcc"]
+	path = arm-none-eabi-gcc
+	url = git@github.com:radioflash/arm-none-eabi-gcc.git
