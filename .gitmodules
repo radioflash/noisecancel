@@ -1,3 +1,0 @@
-[submodule "arm-none-eabi-gcc"]
-	path = arm-none-eabi-gcc
-	url = ./arm-none-eabi-gcc
