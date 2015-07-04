@@ -26,7 +26,7 @@
 								</outputEntries>
 							</builder>
 							<tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.871757025" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler">
-								<option id="gnu.c.compiler.option.include.paths.1936159802" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.c.compiler.option.include.paths.1936159802" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/noisecancel/src/device/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/noisecancel/src/cmsis/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/noisecancel/src/stm32f4/inc}&quot;"/>
@@ -34,7 +34,7 @@
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.190857668" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.515649322" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
-								<option id="gnu.cpp.compiler.option.include.paths.229701266" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.cpp.compiler.option.include.paths.229701266" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/noisecancel/src/device/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/noisecancel/src/cmsis/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/noisecancel/src/stm32f4/inc}&quot;"/>
@@ -50,7 +50,7 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.archiver.1161580212" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver"/>
 							<tool id="cdt.managedbuild.tool.gnu.cross.assembler.1362388649" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler">
-								<option id="gnu.both.asm.option.include.paths.2128109618" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+								<option id="gnu.both.asm.option.include.paths.2128109618" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/noisecancel/src/device/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/noisecancel/src/cmsis/inc}&quot;"/>
 								</option>
