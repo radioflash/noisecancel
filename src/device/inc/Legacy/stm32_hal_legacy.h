@@ -1131,9 +1131,12 @@
 /** @defgroup HAL_I2S_Aliased_Macros HAL I2S Aliased Macros maintained for legacy purpose
   * @{
   */
-  
+#ifndef IS_I2S_INSTANCE
 #define IS_I2S_INSTANCE                 IS_I2S_ALL_INSTANCE
+#endif
+#ifndef IS_I2S_INSTANCE_EXT
 #define IS_I2S_INSTANCE_EXT             IS_I2S_ALL_INSTANCE_EXT
+#endif
 
 /**
   * @}

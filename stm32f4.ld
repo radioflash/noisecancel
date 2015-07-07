@@ -7,8 +7,8 @@
  */
 MEMORY
 {
-  SRAM (rx)  : ORIGIN = 0x20000000, LENGTH = 128K
-  CCRAM (xrw): ORIGIN = 0x10000000, LENGTH = 64K
+  SRAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 128K
+  CCRAM (rw): ORIGIN = 0x10000000, LENGTH = 64K
   FLASH (rwx): ORIGIN = 0x08000000, LENGTH = 1024K
 }
 
@@ -42,7 +42,7 @@ MEMORY
  *   __StackTop
  *   __stack
  */
-ENTRY(_init)
+ENTRY(Reset_Handler)
 
 SECTIONS
 {
@@ -163,6 +163,8 @@ SECTIONS
 	{
 		*(.stack*)
 	} > SRAM
+	
+	.ARM.attributes 0 : { *(.ARM.attributes) }
 
 	/* Set stack top to end of RAM, and stack limit move down by
 	 * size of stack_dummy section */

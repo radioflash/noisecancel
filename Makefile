@@ -9,13 +9,11 @@ SIZE= $(CROSS)size
 NM= $(CROSS)nm
 OPENOCD= openocd
 
-LLC= llc
-CLANG= clang
-
 # output directory
 OUT= build
 
 APP_SRC_DIR= src
+HAL_SRC_DIR= src/device/src
 
 # recursive wildcard function
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
@@ -24,46 +22,36 @@ INC= -Isrc -Isrc/device/inc -Isrc/cmsis/inc -Isrc/dsp/inc
 
 # -flto is needed for compiling and linking
 ARCH= -march=armv7e-m -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -flto
-OPT= -Os -ffunction-sections -fdata-sections -fno-exceptions
+OPT= -Os -g -ffunction-sections -fdata-sections
 CWARN= -Wall -Wextra -Wdouble-promotion -Wmissing-field-initializers \
   -Werror=implicit-function-declaration
 LDSCRIPT= stm32f4.ld
 
 ASMFLAGS= $(ARCH)
 CFLAGS= $(ARCH) $(OPT) $(CWARN) $(INC) -std=gnu99 
-CXXFLAGS= $(ARCH) $(OPT) $(CWARN) $(INC) -std=gnu++11
-LDFLAGS= $(ARCH) --specs=nano.specs -nostartfiles -static -Wl,--gc-sections -T $(LDSCRIPT) 
-
-# CLANG-flags
-GCC_INC= ./$(TRIPLE)-gcc/$(TRIPLE)/include
-LLVM_INC= -isystem $(GCC_INC) $(INC)
-LLVM_ARCH= -fgnu-keywords -ffunction-sections -fdata-sections -m32
-LLVM_OPT= -Os -g -emit-llvm
-LLVM_CXX_SYS_INC= -cxx-isystem $(GCC_INC)/c++/4.9.3 -cxx-isystem $(GCC_INC)/c++/4.9.3/$(TRIPLE)/armv7e-m
-LLVM_CFLAGS= $(LLVM_ARCH) $(LLVM_INC) $(LLVM_OPT) -std=c99
-LLVM_CXXFLAGS= $(LLVM_ARCH) $(LLVM_CXX_SYS_INC) $(LLVM_INC) $(LLVM_OPT) -fno-exceptions -std=c++11
-LLVM_LLCFLAGS= -mtriple=arm-none-eabi
+CXXFLAGS= $(ARCH) $(OPT) $(CWARN) $(INC) -fno-exceptions -std=gnu++11
+LDFLAGS= $(ARCH) -g --specs=nano.specs -nostartfiles -static -Wl,--gc-sections -T $(LDSCRIPT) -L. -lPDMFilter_CM4F_GCC 
 
 APP_ASM_SRC= $(wildcard $(APP_SRC_DIR)/*.s)
 APP_C_SRC= $(wildcard $(APP_SRC_DIR)/*.c)
 APP_CXX_SRC= $(wildcard $(APP_SRC_DIR)/*.cpp)
 
-#APP_LLVM_C_BC= $(APP_C_SRC:%.c=$(OUT)/%.bc)
-#APP_LLVM_CXX_BC= $(APP_CXX_SRC:%.cpp=$(OUT)/%.bc)
-#APP_LLVM_ASM= $(APP_LLVM_C_BC:%.bc=%.s) $(APP_LLVM_CXX_BC:%.bc=%.s)
+HAL_C_SRC= $(wildcard $(HAL_SRC_DIR)/*.c)
 
 APP_ASM_OBJ= $(APP_ASM_SRC:%.s=$(OUT)/%.o) #$(APP_LLVM_ASM:%.s=$(OUT)/%.o)
 APP_C_OBJ= $(APP_C_SRC:%.c=$(OUT)/%.o)
 APP_CXX_OBJ= $(APP_CXX_SRC:%.cpp=$(OUT)/%.o)
 
-OBJ= $(APP_ASM_OBJ) $(APP_C_OBJ) $(APP_CXX_OBJ)
+HAL_C_OBJ= $(HAL_C_SRC:%.c=$(OUT)/%.o)
+
+OBJ= $(APP_ASM_OBJ) $(APP_C_OBJ) $(APP_CXX_OBJ) $(HAL_C_OBJ)
 
 ELF= $(OUT)/noisecancel.elf
 HEX= $(OUT)/noisecancel.hex
 BIN= $(OUT)/noisecancel.bin
 
 # suppress echoing the command invocation
-#Q= @
+Q= @
 # silent sub-make
 S= -s
 E= @echo
@@ -91,7 +79,7 @@ clean:
 $(ELF): $(OBJ) $(LDSCRIPT) Makefile
 	$(Q) mkdir -p $(@D)
 	$(E) "LD ELF    $@" $(OBJ)
-	$(Q) $(LD) -o $@ $(LDFLAGS) $(OBJ)
+	$(Q) $(LD) -o $@ $(OBJ) $(LDFLAGS)
 
 $(BIN): $(ELF)
 	$(Q) mkdir -p $(@D)
@@ -135,27 +123,17 @@ $(APP_C_OBJ): $(OUT)/%.o: %.c Makefile
 	$(E) "CC        $@"
 	$(Q) mkdir -p $(@D)
 	$(Q) $(CC) -o $@ -c -MMD -MP $(CFLAGS) -frandom-seed=$< $<
+	
+$(HAL_C_OBJ): $(OUT)/%.o: %.c Makefile
+	$(E) "CC        $@"
+	$(Q) mkdir -p $(@D)
+	$(Q) $(CC) -o $@ -c -MMD -MP $(CFLAGS) -frandom-seed=$< $<
 
 # Cpp compilation rule
 $(APP_CXX_OBJ): $(OUT)/%.o: %.cpp Makefile
-	$(E) "CC        $@"
+	$(E) "CPP       $@"
 	$(Q) mkdir -p $(@D)
 	$(Q) $(CXX) -o $@ -c -MMD -MP $(CXXFLAGS) -frandom-seed=$< $<
-
-$(APP_LLVM_C_BC): $(OUT)/%.bc: %.c Makefile
-	$(E) "LLVM CC   $@"
-	$(Q) mkdir -p $(@D)
-	$(Q) $(CLANG) $(LLVM_CFLAGS) -o $@ -c -MMD -MP $<
-
-$(APP_LLVM_CXX_BC): $(OUT)/%.bc: %.cpp Makefile
-	$(E) "LLVM CXX  $@"
-	$(Q) mkdir -p $(@D)
-	$(Q) $(CLANG) $(LLVM_CXXFLAGS) -o $@ -c -MMD -MP $<
-
-$(APP_LLVM_ASM): %.s: %.bc Makefile
-	$(E) "OPT       $@"
-	$(Q) mkdir -p $(@D)
-	$(Q) $(LLC) $(LLVM_LLCFLAGS) -o $@ $<
 
 # disables all builtin suffix-rules, which we don't need anyway. 
 .SUFFIXES:

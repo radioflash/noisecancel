@@ -435,11 +435,11 @@ void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState Pin
 
   if(PinState != GPIO_PIN_RESET)
   {
-    GPIOx->BSRR = GPIO_Pin;
+    GPIOx->BSRRH = GPIO_Pin;
   }
   else
   {
-    GPIOx->BSRR = (uint32_t)GPIO_Pin << 16;
+    GPIOx->BSRRL = (uint32_t)GPIO_Pin << 16;
   }
 }
 
@@ -522,6 +522,7 @@ __weak void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_GPIO_EXTI_Callback could be implemented in the user file
    */
+  (void)GPIO_Pin;
 }
 
 /**

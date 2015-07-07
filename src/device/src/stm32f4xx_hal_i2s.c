@@ -357,6 +357,7 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
   */
  __weak void HAL_I2S_MspInit(I2S_HandleTypeDef *hi2s)
 {
+   (void)hi2s;
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_MspInit could be implemented in the user file
    */ 
@@ -370,6 +371,7 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
   */
  __weak void HAL_I2S_MspDeInit(I2S_HandleTypeDef *hi2s)
 {
+   (void)hi2s;
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_MspDeInit could be implemented in the user file
    */ 
@@ -1090,6 +1092,7 @@ __weak void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
   */
  __weak void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+   (void)hi2s;
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_TxHalfCpltCallback could be implemented in the user file
    */ 
@@ -1103,6 +1106,7 @@ __weak void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
   */
  __weak void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+   (void)hi2s;
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_TxCpltCallback could be implemented in the user file
    */ 
@@ -1116,6 +1120,7 @@ __weak void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
   */
 __weak void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+  (void)hi2s;
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_RxCpltCallback could be implemented in the user file
    */
@@ -1129,6 +1134,7 @@ __weak void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
   */
 __weak void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+  (void)hi2s;
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_RxCpltCallback could be implemented in the user file
    */
@@ -1142,6 +1148,7 @@ __weak void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
   */
  __weak void HAL_I2S_ErrorCallback(I2S_HandleTypeDef *hi2s)
 {
+   (void)hi2s;
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_ErrorCallback could be implemented in the user file
    */ 

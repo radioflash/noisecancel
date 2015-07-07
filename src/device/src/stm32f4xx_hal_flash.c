@@ -414,6 +414,7 @@ __weak void HAL_FLASH_EndOfOperationCallback(uint32_t ReturnValue)
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_FLASH_EndOfOperationCallback could be implemented in the user file
    */ 
+  (void)ReturnValue;
 }
 
 /**
@@ -428,7 +429,8 @@ __weak void HAL_FLASH_OperationErrorCallback(uint32_t ReturnValue)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_FLASH_OperationErrorCallback could be implemented in the user file
-   */ 
+   */
+  (void)ReturnValue;
 }
 
 /**
